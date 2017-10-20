@@ -9,9 +9,8 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine is available globally via the Engine variable and it also makes
- * the canvas' context (ctx) object globally available to make writing app.js
- * a little simpler to work with.
+ * This engine makes the canvas' context (ctx) object globally available to make
+ * writing app.js a little simpler to work with.
  */
 
 var Engine = (function(global) {
@@ -94,7 +93,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -152,6 +150,8 @@ var Engine = (function(global) {
         });
 
         player.render();
+        gem.render();
+
     }
 
     /* This function does nothing but it could have been a good place to
@@ -171,7 +171,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/GemBlue.png'
     ]);
     Resources.onReady(init);
 
