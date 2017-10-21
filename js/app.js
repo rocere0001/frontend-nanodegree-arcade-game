@@ -63,17 +63,17 @@ Enemy.prototype.update = function(dt) {
     // death of player
 
     // The enemies should move along a line on the X axis
-    this.x += (dt*50);
+    this.x += (dt*getRandomInt(150,300));
 
     // We need to find out if x of player is the same as enemy
 
     //If enemy moves to end of frame/out of frame, reset position (?) or create new
-    if(this.x > 404){
+    if(this.x > getRandomInt(404,604)){
         this.reset();
     }
 };
 Enemy.prototype.reset = function(){
-    this.x = -50;
+    this.x = getRandomInt(-100,-25);
     this.y = enemyYPos[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
 };
 // Draw the enemy on the screen, required method for game
@@ -111,44 +111,43 @@ Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(key) {
-    switch (key) {
-        case 'up':
-            //checks if player is off the map
-            if (player.y === 55) {
-                player.reset();
-            }
-            else {
-                player.y -= 85;
-            }
-            break;
-        case 'down':
-            if (player.y === 395) {
-                player.reset();
-            }
-            else {
-                player.y += 85;
-            }
-            break;
-        case 'left':
-            if (player.x === 0) {
-                player.reset();
-            }
-            else {
-                player.x -= 100;
-            }
-            break;
-        case 'right':
-            if (player.x === 400) {
-                player.reset();
-            }
-            else {
-                player.x += 100;
-            }
 
-            break;
+/*/Handle Player movement/*/
+//Source1: http://www.dummies.com/programming/programming-games/how-to-check-boundaries-in-your-html5-game/
+//Source2: https://groups.google.com/forum/#!topic/fabricjs/Jvo9Z1xNIV8
+Player.prototype.handleInput = function(key) {
+    if(key === 'up') {
+        //checks if player is off the map
+        if (player.y - 83 < 0) { //player is in the water
+            player.y = 393;
+        }
+        else {
+            player.y -= 83;
+        }
+    }else if(key === 'down') {
+        if (player.y + 83 > 393) {
+            player.y = 393;
+        }
+        else {
+            player.y += 83;
+        }
+    }else if(key === 'left') {
+        if (player.x - 101 < 0) {
+            player.x = 0;
+        }
+        else {
+            player.x -= 101;
+        }
+    }else if(key === 'right') {
+        if (player.x + 101 > 404) {
+            player.x = 404;
+        }
+        else {
+            player.x += 101;
+        }
     }
 };
+
 
 function createEnemies(){
     var endRandom = getRandomInt(5,7);
@@ -156,6 +155,14 @@ function createEnemies(){
         allEnemies.push(new Enemy());
     }
 }
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+} //Source: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+
+player = new Player();
+gem = new Gem();
+createEnemies();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -169,18 +176,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]); //Need to Implement this
 });
-
-
-
-
-player = new Player();
-gem = new Gem();
-createEnemies();
-
-
-
-
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-} //Source: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
