@@ -51,8 +51,8 @@ var Enemy = function() {
 };
 
 var displayScores = function() {
-    var playerScoreDisplay = document.getElementById("score");
-    playerScoreDisplay.innerHTML = playerScore;
+    var span = document.getElementById("score");
+    span.innerHTML = playerScore;
 
     var hiScoreDisplay = document.getElementById('highscore');
     hiScoreDisplay.innerHTML = highScore;
@@ -70,10 +70,7 @@ Enemy.prototype.update = function(dt) {
         //console.log("not death reached");
     }
 };
-Enemy.prototype.reset = function(){
-    this.x = -100;
-    this.y = enemyYPos[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
-};
+
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
@@ -169,7 +166,7 @@ function getRandomInt(min, max) {
 player = new Player();
 //gem = new Gem();
 createEnemies();
-//displayScores();
+displayScores();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
