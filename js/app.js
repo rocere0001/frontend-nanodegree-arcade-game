@@ -1,116 +1,98 @@
 /*/ Define Variables /*/
-
+/*/Player lives, time, score etc/*/
 var allEnemies=[];
-var gem;
 var player;
 var playerScore = 0;
 var highScore = 0;
+var playerLives = 5; //Set start lives of the player
+var enemyYPos = [61,144,227];
 
 /*/Player start position - Middle of width, bottom of height (?) or maybe in the middle tile/*/
 //var playerX = 202; // 2*101 - is that the "real" middle?
 //var playerY = 400; // top to bottom or bottom to top? if other way around - 415 or something like that //
 /*/End player start position/*/
 
-/*/Player moves between tiles
- col * 101, row * 83 1
- numRows = 6, numCols = 5,
- -> Rows go from 0 - 498, cols from 0 - 505
+/*/
+Player moves between tiles
+col * 101, row * 83 1
+numRows = 6, numCols = 5,
+-> Rows go from 0 - 498, cols from 0 - 505
+/*/
 
- /*/
+/*
 var playerXPos = [0, 101, 202, 303, 404];
 var playerYPos = [61,144,227,310,393];
-var enemyYPos = [61,144,227];
-/*/
-
-/*/
-
-/*/Player lives, time, score etc/*/
-var playerLives = 5; //Set start lives of the player
-
-var playerTime = 0; // Find out how time could be counted
-var playerLevel = 0; // Find out how to implement and count playerLevel
+*/
+/*
+var playerTime = 0; // TODO: Find out how time could be counted
+var playerLevel = 0; // TODO: Find out how to implement and count playerLevel
+*/
 
 function death(){
-    playerX = 202; //when the player dies reset the position
-    playerY = 400;
-    playerLives--; //substract a live
-    document.getElementById("lives").innerHTML = playerLives; // Show playerLives under Gameboard
-    if(playerLives === 0){
-        //Display Message that player is dead and add a play again button
-        document.write("<h1>GAME OVER</h1><br /><h3>Click here to play again / Replay Button</h3>")
+    player.x = 202; //when the player dies reset the position
+    player.y = 400;
+    if(playerScore > highScore){
+        highScore = playerScore;
     }
+    playerScore = 0; //when Player dies reset current points
 }
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
-    
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = -50; //Spawn bugs out of canvas
     this.y = enemyYPos[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
+    this.width = 101;
+    this.height = 171;
 };
+
+var displayScores = function() {
+    var playerScoreDisplay = document.getElementById("score");
+    playerScoreDisplay.innerHTML = playerScore;
+
+    var hiScoreDisplay = document.getElementById('highscore');
+    hiScoreDisplay.innerHTML = highScore;
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    // death of player
-
-    // The enemies should move along a line on the X axis
     this.x += (dt*getRandomInt(150,300));
-
-    // We need to find out if x of player is the same as enemy
-
-    //If enemy moves to end of frame/out of frame, reset position (?) or create new
-    if(this.x > getRandomInt(404,604)){
-        this.reset();
+    for(var i = 0; i < allEnemies.length; i++){
+        if(isCollide(player,allEnemies[i])){
+            //console.log("Death reached");
+            death();
+        }
+        //console.log("not death reached");
     }
 };
 Enemy.prototype.reset = function(){
-    this.x = getRandomInt(-100,-25);
+    this.x = -100;
     this.y = enemyYPos[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
 };
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
 };
 
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
 var Player = function() { //same as Enemy
     this.x = 202; //start position of player
     this.y = 400;
-    this.sprite = 'images/char-boy.png';
+    this.sprite = 'images/char-boy.png'; //TODO: Add Selection of player sprite
+    this.width = 101;
+    this.height = 171;
+
 };
 
 // Draw the enemy on the screen, required method for game
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,this.width, this.height);
 };
-
-var Gem = function() {
-    this.sprite = 'images/GemBlue.png';
-    this.x = 202;
-    this.y = enemyYPos[getRandomInt(0,2)];
-};
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-Gem.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 
 /*/Handle Player movement/*/
 //Source1: http://www.dummies.com/programming/programming-games/how-to-check-boundaries-in-your-html5-game/
@@ -120,6 +102,7 @@ Player.prototype.handleInput = function(key) {
         //checks if player is off the map
         if (player.y - 83 < 0) { //player is in the water
             player.y = 393;
+            playerScore += 5;
         }
         else {
             player.y -= 83;
@@ -148,21 +131,45 @@ Player.prototype.handleInput = function(key) {
     }
 };
 
-
+/*/First it runs the deleteOffScreen function to remove all enemies that have moved off screen. I tried resetting the position and spawning extras but that lead to too much clutter and the filling of the screen.
+Then it creates a new enemy and afterwards waits between 250 and 1250 ms to call the function again. I found this logic to periodically call functions on stackoverflow (Source near functions)./*/
 function createEnemies(){
-    var endRandom = getRandomInt(5,7);
-    for(var i = 0; i < endRandom; i++){
-        allEnemies.push(new Enemy());
+    deleteOffScreen();
+    allEnemies.push(new Enemy());
+    // Source: https://stackoverflow.com/questions/1224463/is-there-any-way-to-call-a-function-periodically-in-javascript
+    setTimeout(createEnemies,getRandomInt(250,1250));
+};
+
+// Source: https://stackoverflow.com/questions/2440377/javascript-collision-detection
+/*/The collision was tricky but I found a few helping points while searching for answers.
+This functions returns true as long as the player is above, below, to the left or right of the enemy.
+ As soon as this isn't the case anymore all checks will return false and a collision will occur/*/
+isCollide = function(p,e) {
+    return !(
+        (p.y + (p.height - 170)) < (e.y) || // check if player is above enemy
+        p.y > (e.y+(e.height - 95)) || // check if player is under enemy
+        p.x < e.x || //check if player is to the left of enemy
+        (p.x + 45) > (e.x + e.width) //check if player is to the right of enemy
+    );
+}
+
+function deleteOffScreen(){
+    for(var i = 0; i< allEnemies.length; i++){
+        if(allEnemies[i].y > 505){
+            allEnemies.splice(i,1);
+        }
     }
 }
 
+//Source: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-} //Source: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+}
 
 player = new Player();
-gem = new Gem();
+//gem = new Gem();
 createEnemies();
+//displayScores();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

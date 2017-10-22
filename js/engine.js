@@ -79,7 +79,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        // if(isCollide(player,enem));
     }
 
     /* This is called by the update function and loops through all of the
@@ -150,7 +150,7 @@ var Engine = (function(global) {
         });
 
         player.render();
-        gem.render();
+        //gem.render();
 
     }
 
