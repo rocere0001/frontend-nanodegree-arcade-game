@@ -1,7 +1,20 @@
-frontend-nanodegree-arcade-game
-===============================
+A) How to run
+=============
+Download the zip and open the index.html with a browser
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+B) How to play
+=============
+Use the arrow keys to move the character. Try to avoid the beetles and reach the water. Upon reaching the water you get 5 points, but if you die you lose them all.
+To test yourself the high score is being tracked
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
-as<df
+Sources
+-------
+* For the handling of the player movement:
+    * http://www.dummies.com/programming/programming-games/how-to-check-boundaries-in-your-html5-game/
+    * https://groups.google.com/forum/#!topic/fabricjs/Jvo9Z1xNIV8
+* To periodically spawn enemies:
+    * https://stackoverflow.com/questions/1224463/is-there-any-way-to-call-a-function-periodically-in-javascript
+* For the collision detection:
+    * https://stackoverflow.com/questions/2440377/javascript-collision-detection
+* For the random number generator:
+    * https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range

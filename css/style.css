@@ -2,21 +2,6 @@ body {
     text-align:center;
     background-color: #558C89;
 }
-/*.title{
-    display: inline-block;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    padding: 10px;
-    overflow: hidden;
-    border: none;
-    font: normal 70px/1 "VT323", Helvetica, sans-serif;
-    color: rgba(255,255,0,1);
-    text-align: center;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    text-shadow: 5px 5px 0 rgba(255,0,0,1) ;
-}*/
 .full-width-bar {
     width: 505px;
     background-color: #D9853B;
@@ -29,8 +14,6 @@ body {
     text-align: left;
     margin-left: .5cm;
 }
-
-
 /*
 Colors:
 #558C89 - Darker Blue

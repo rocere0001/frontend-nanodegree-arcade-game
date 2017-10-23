@@ -150,7 +150,6 @@ var Engine = (function(global) {
         });
 
         player.render();
-        //gem.render();
 
     }
 
