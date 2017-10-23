@@ -20,7 +20,7 @@ function displayScores() {
 //Player function
 var Player = function() { //same as Enemy
     this.x = 202; //start position of player
-    this.y = 400;
+    this.y = 393;
     this.sprite = 'images/char-boy.png'; //TODO: Add Selection of player sprite
     this.width = 101;
     this.height = 171;
@@ -70,38 +70,38 @@ Player.prototype.render = function() {
 
 /*/Handle Player movement/*/
 //Source1: http://www.dummies.com/programming/programming-games/how-to-check-boundaries-in-your-html5-game/
-//Source2: https://groups.google.com/forum/#!topic/fabricjs/Jvo9Z1xNIV8
+//Source2: https://groups.google.com/d/msg/fabricjs/Jvo9Z1xNIV8/o3qCz6KgpSQJ
 Player.prototype.handleInput = function(key) {
     if(key === 'up') {
         //checks if player is off the map
-        if (player.y - 83 < 0) { //player is in the water
-            player.y = 393;
+        if (this.y < 83) { //player is in the water
+            this.y = 393;
             playerScore += 5;
             console.log(playerScore); //debug
         }
         else {
-            player.y -= 83;
+            this.y -= 83;
         }
     }else if(key === 'down') {
-        if (player.y + 83 > 393) {
-            player.y = 393;
+        if (this.y > 392) {
+            this.y = 393;
         }
         else {
-            player.y += 83;
+            this.y += 83;
         }
     }else if(key === 'left') {
-        if (player.x - 101 < 0) {
-            player.x = 0;
+        if (this.x  < 1) {
+            this.x = 0;
         }
         else {
-            player.x -= 101;
+            this.x -= 101;
         }
     }else if(key === 'right') {
-        if (player.x + 101 > 404) {
-            player.x = 404;
+        if (this.x > 403) {
+            this.x = 404;
         }
         else {
-            player.x += 101;
+            this.x += 101;
         }
     }
 };
@@ -127,7 +127,8 @@ isCollide = function(p,e) {
         (p.x + 45) > (e.x + e.width)
     );
 };
-
+//As soon as the beetle moved off screen it is being removed from the game. This is to allow new ones to be spawned
+//Source: https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript Tbh I knew how to remove elements from array but just forgot!
 function deleteOffScreen(){
     for(var i = 0; i< allEnemies.length; i++){
         if(allEnemies[i].y > 505){

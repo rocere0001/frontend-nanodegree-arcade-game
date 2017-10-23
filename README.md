@@ -11,7 +11,7 @@ Sources
 -------
 * For the handling of the player movement:
     * http://www.dummies.com/programming/programming-games/how-to-check-boundaries-in-your-html5-game/
-    * https://groups.google.com/forum/#!topic/fabricjs/Jvo9Z1xNIV8
+    * https://groups.google.com/d/msg/fabricjs/Jvo9Z1xNIV8/o3qCz6KgpSQJ
 * To periodically spawn enemies:
     * https://stackoverflow.com/questions/1224463/is-there-any-way-to-call-a-function-periodically-in-javascript
 * For the collision detection:
