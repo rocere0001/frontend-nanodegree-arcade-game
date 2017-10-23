@@ -15,7 +15,7 @@ function displayScores() {
     var spans = document.getElementsByTagName("span");
     spans[0].innerHTML = playerScore;
     spans[1].innerHTML = highScore;
-};
+}
 
 //Player function
 var Player = function() { //same as Enemy
@@ -29,7 +29,7 @@ var Player = function() { //same as Enemy
 // Enemies our player must avoid
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
-    this.x = -70;//Spawn bugs out of canvas
+    this.x = -70; //Spawn bugs out of canvas
     this.y = enemyYPos[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
     this.width = 101;
     this.height = 171;
@@ -113,7 +113,7 @@ function createEnemies(){
     allEnemies.push(new Enemy());
     // Source: https://stackoverflow.com/questions/1224463/is-there-any-way-to-call-a-function-periodically-in-javascript
     setTimeout(createEnemies,getRandomInt(250,1250));
-};
+}
 
 // Source: https://stackoverflow.com/questions/2440377/javascript-collision-detection
 /*/The collision was tricky but I found a few helping points while searching for answers.
@@ -126,7 +126,7 @@ isCollide = function(p,e) {
         (p.x+45) < e.x ||
         (p.x + 45) > (e.x + e.width)
     );
-}
+};
 
 function deleteOffScreen(){
     for(var i = 0; i< allEnemies.length; i++){
