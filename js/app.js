@@ -5,7 +5,7 @@ var player;
 var playerScore = 0;
 var highScore = 0;
 //var playerLives = 5; //Set start lives of the player //TODO: Add playerLives system and game over
-var enemyYPos = [61,144,227];
+var ENEMYPOS = [61,144,227];
 /*/
 var playerTime = 0; // TODO: Find out how time could be counted
 var playerLevel = 0; // TODO: Find out how to implement and count playerLevel
@@ -30,16 +30,16 @@ var Player = function() { //same as Enemy
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -70; //Spawn bugs out of canvas
-    this.y = enemyYPos[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
+    this.y = ENEMYPOS[getRandomInt(0,2)]; // random tile on the canvas along the Y axis
     this.width = 101;
     this.height = 171;
 };
-
+var player = new gameObject(202,393,'images/char-boy.png',101,171);
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     this.x += (dt*getRandomInt(150,300));
-    for(var i = 0; i < allEnemies.length; i++){
+    for(var i = 0,arrlen = allEnemies.length; i < arrlen; i++){
         if(isCollide(player,allEnemies[i])){
             player.death();
         }
@@ -54,8 +54,8 @@ Enemy.prototype.render = function() {
 
 // If collision occured: reset player position and reset scoreboard and write highscore
 Player.prototype.death = function(){
-    player.x = 202; //when the player dies reset the position
-    player.y = 400;
+    this.x = 202; //when the player dies reset the position
+    this.y = 400;
     if(playerScore > highScore){
         highScore = playerScore;
     }
@@ -130,7 +130,7 @@ isCollide = function(p,e) {
 //As soon as the beetle moved off screen it is being removed from the game. This is to allow new ones to be spawned
 //Source: https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript Tbh I knew how to remove elements from array but just forgot!
 function deleteOffScreen(){
-    for(var i = 0; i< allEnemies.length; i++){
+    for(var i = 0, allLen = allEnemies.length; i< allLen; i++){
         if(allEnemies[i].y > 505){
             allEnemies.splice(i,1);
         }
@@ -141,8 +141,9 @@ function deleteOffScreen(){
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+//player = new gameObject(202,393,'images/char-boy.png',101,171);
+var player = new Player();
 
-player = new Player();
 createEnemies();
 
 // This listens for key presses and sends the keys to your
