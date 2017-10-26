@@ -1,7 +1,6 @@
 /*/ Define Variables /*/
 /*/Player lives, time, score etc/*/
 var allEnemies=[];
-var player;
 var playerScore = 0;
 var highScore = 0;
 //var playerLives = 5; //Set start lives of the player //TODO: Add playerLives system and game over
@@ -34,7 +33,6 @@ var Enemy = function() {
     this.width = 101;
     this.height = 171;
 };
-var player = new gameObject(202,393,'images/char-boy.png',101,171);
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
